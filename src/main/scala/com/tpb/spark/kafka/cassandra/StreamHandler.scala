@@ -11,12 +11,24 @@ case class DeviceData(device: String, temp: Double, humd: Double, pres: Double)
 object StreamHandler {
   def main(args: Array[String]) {
 
+    /*
+    Cassandra
+7199 JMX monitoring port
+1024 - 65355 Random port required by JMX. Starting with Java 7u4 a specific port can be specified using the com.sun.management.jmxremote.rmi.port property.
+7000 Inter-node cluster
+7001 SSL inter-node cluster
+9042 CQL Native Transport Port
+9160 Thrift
+     */
+
     // initialize Spark
     val spark = SparkSession
       .builder
       .appName("Stream Handler")
       .master("local[4]")
       .config("spark.cassandra.connection.host", "localhost")
+      //.option("spark.cassandra.connection.host", "10.142.0.3")
+      //  .option("spark.cassandra.connection.port", "9042")
       .getOrCreate()
 
     import spark.implicits._
